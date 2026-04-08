@@ -693,6 +693,38 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, (req, res) => {
   res.json(stats);
 });
 
+// Search patients by email, phone, or ID (for clinic access)
+app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, (req, res) => {
+  const query = (req.query.query || '').toLowerCase();
+  
+  if (!query) {
+    return res.status(400).json({ error: 'Search query is required' });
+  }
+  
+  const users = readDB('users');
+  const results = users.filter(user => {
+    const matchesEmail = user.email && user.email.toLowerCase().includes(query);
+    const matchesPhone = user.phone && user.phone.toLowerCase().includes(query);
+    const matchesId = user.id && user.id.toLowerCase().includes(query);
+    const matchesName = user.name && user.name.toLowerCase().includes(query);
+    
+    return matchesEmail || matchesPhone || matchesId || matchesName;
+  });
+  
+  // Return user data without passwords
+  const safeResults = results.map(user => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phone: user.phone,
+    role: user.role,
+    createdAt: user.createdAt,
+    lastLogin: user.lastLogin,
+  }));
+  
+  res.json(safeResults);
+});
+
 // ==================== START SERVER ====================
 
 app.listen(PORT, () => {
