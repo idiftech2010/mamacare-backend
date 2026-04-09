@@ -61,6 +61,9 @@ const DB_FILES = {
   doctors: path.join(DATA_DIR, 'doctors.json'),
   content: path.join(DATA_DIR, 'content.json'),
   sessions: path.join(DATA_DIR, 'sessions.json'),
+  wearables: path.join(DATA_DIR, 'wearables.json'),
+  posts: path.join(DATA_DIR, 'posts.json'),
+  gallery: path.join(DATA_DIR, 'gallery.json'),
 };
 
 // Initialize database files
@@ -259,8 +262,39 @@ const initDoctors = () => {
   }
 };
 
+const initWearables = () => {
+  const wearables = readDB('wearables');
+  if (wearables.length === 0) {
+    const defaultWearables = [
+      {
+        id: uuidv4(),
+        name: 'Guardian Watch',
+        description: 'Continuous vital tracking with African-inspired design elements',
+        price: 120,
+        image: 'https://images.unsplash.com/photo-1517414204285-7eb0a937d39c?w=400&h=400&fit=crop',
+        specs: 'Heart rate · Blood pressure · Sleep tracking',
+        available: true,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: uuidv4(),
+        name: 'Unity Band',
+        description: 'Activity and sleep monitoring for holistic wellness tracking',
+        price: 90,
+        image: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=400&fit=crop',
+        specs: 'Activity · Sleep · Stress monitoring',
+        available: true,
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    writeDB('wearables', defaultWearables);
+    console.log('✓ Default wearables created');
+  }
+};
+
 initDefaultUsers();
 initDoctors();
+initWearables();
 
 // Authentication middleware
 const authMiddleware = (req, res, next) => {
@@ -577,6 +611,51 @@ app.get('/api/risk-assessment/history', authMiddleware, (req, res) => {
   res.json(userRecords.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
 });
 
+// Chat support route
+app.post('/api/chat', (req, res) => {
+  const { message } = req.body;
+  const text = (message || '').toString().trim();
+  const normalized = text.toLowerCase();
+
+  if (!text) {
+    return res.status(400).json({ response: 'Please type your question so MamaCare can help.' });
+  }
+
+  const knowledge = [
+    {
+      triggers: ['risk assessment', 'risk', 'score', 'assessment'],
+      reply: 'Mamacare AI analyzes your vital signs and symptoms to estimate your pregnancy risk level. Please complete the risk assessment form on the website to receive personalized guidance.',
+    },
+    {
+      triggers: ['wearable', 'device', 'wearables', 'watch', 'band', 'ring'],
+      reply: 'Our wearable devices help track your vital signs and support continuous monitoring. You can view available devices on the Wearables page and see pricing or order information there.',
+    },
+    {
+      triggers: ['telemedicine', 'doctor', 'appointment', 'consultation'],
+      reply: 'You can connect with maternal health specialists through our Telemedicine section. Book a consultation or view the available healthcare providers there.',
+    },
+    {
+      triggers: ['emergency', 'urgent', 'help now', 'danger'],
+      reply: 'If this is an emergency, please call your local emergency number immediately. For urgent pregnancy concerns, contact a healthcare provider right away.',
+    },
+    {
+      triggers: ['register', 'login', 'signup', 'sign up', 'sign in'],
+      reply: 'To use full MamaCare features, register or login first. This also ensures your assessments and records are saved for the admin dashboard.',
+    },
+    {
+      triggers: ['support', 'chat', 'help', 'question'],
+      reply: 'MamaCare support is available 24/7. Ask any question about pregnancy, nutrition, symptoms, or device support, and I will help you navigate the platform.',
+    },
+  ];
+
+  const match = knowledge.find((item) => item.triggers.some((trigger) => normalized.includes(trigger)));
+  const response = match
+    ? match.reply
+    : 'Mamacare is an AI-assisted maternal health companion. I can help you with pregnancy risk assessment, telemedicine, wearable devices, and support resources. Please ask about your symptoms, a feature, or how to get started.';
+
+  res.json({ response });
+});
+
 // ==================== DOCTOR ROUTES ====================
 
 // Get all doctors
@@ -667,6 +746,125 @@ app.delete('/api/admin/doctors/:id', authMiddleware, adminMiddleware, (req, res)
   const filtered = doctors.filter(d => d.id !== req.params.id);
   writeDB('doctors', filtered);
   res.json({ message: 'Doctor deleted' });
+});
+
+// Content management endpoints (admin only)
+app.get('/api/admin/posts', authMiddleware, adminMiddleware, (req, res) => {
+  const posts = readDB('posts');
+  res.json(posts);
+});
+
+app.post('/api/admin/posts', authMiddleware, adminMiddleware, (req, res) => {
+  const posts = readDB('posts');
+  const postData = req.body;
+  if (postData.id) {
+    const index = posts.findIndex((p) => p.id === postData.id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    posts[index] = { ...posts[index], ...postData, updatedAt: new Date().toISOString() };
+    writeDB('posts', posts);
+    return res.json(posts[index]);
+  }
+  const newPost = {
+    id: uuidv4(),
+    title: postData.title || 'Untitled Post',
+    excerpt: postData.excerpt || '',
+    content: postData.content || '',
+    image: postData.image || '',
+    createdAt: new Date().toISOString(),
+  };
+  posts.push(newPost);
+  writeDB('posts', posts);
+  res.json(newPost);
+});
+
+app.delete('/api/admin/posts/:id', authMiddleware, adminMiddleware, (req, res) => {
+  const posts = readDB('posts');
+  const filtered = posts.filter((post) => post.id !== req.params.id);
+  writeDB('posts', filtered);
+  res.json({ message: 'Post deleted' });
+});
+
+app.get('/api/admin/gallery', authMiddleware, adminMiddleware, (req, res) => {
+  const gallery = readDB('gallery');
+  res.json(gallery);
+});
+
+app.post('/api/admin/gallery', authMiddleware, adminMiddleware, (req, res) => {
+  const gallery = readDB('gallery');
+  const { id, title, image, caption } = req.body;
+  if (id) {
+    const index = gallery.findIndex((item) => item.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Gallery item not found' });
+    }
+    gallery[index] = {
+      ...gallery[index],
+      title: title || gallery[index].title,
+      image: image || gallery[index].image,
+      caption: caption || gallery[index].caption,
+      updatedAt: new Date().toISOString(),
+    };
+    writeDB('gallery', gallery);
+    return res.json(gallery[index]);
+  }
+  const newItem = {
+    id: uuidv4(),
+    title: title || 'Gallery Item',
+    image: image || '',
+    caption: caption || '',
+    createdAt: new Date().toISOString(),
+  };
+  gallery.push(newItem);
+  writeDB('gallery', gallery);
+  res.json(newItem);
+});
+
+app.delete('/api/admin/gallery/:id', authMiddleware, adminMiddleware, (req, res) => {
+  const gallery = readDB('gallery');
+  const filtered = gallery.filter((item) => item.id !== req.params.id);
+  writeDB('gallery', filtered);
+  res.json({ message: 'Gallery item deleted' });
+});
+
+app.get('/api/admin/wearables', authMiddleware, adminMiddleware, (req, res) => {
+  const wearables = readDB('wearables');
+  res.json(wearables);
+});
+
+app.post('/api/admin/wearables', authMiddleware, adminMiddleware, (req, res) => {
+  const wearables = readDB('wearables');
+  const wearableData = req.body;
+  if (wearableData.id) {
+    const index = wearables.findIndex((w) => w.id === wearableData.id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Wearable device not found' });
+    }
+    wearables[index] = { ...wearables[index], ...wearableData, updatedAt: new Date().toISOString() };
+    writeDB('wearables', wearables);
+    return res.json(wearables[index]);
+  }
+  const newDevice = {
+    id: uuidv4(),
+    name: wearableData.name || 'New Wearable',
+    description: wearableData.description || '',
+    price: wearableData.price || 0,
+    image: wearableData.image || '',
+    specs: wearableData.specs || '',
+    available: wearableData.available ?? true,
+    createdAt: new Date().toISOString(),
+  };
+  wearables.push(newDevice);
+  writeDB('wearables', wearables);
+  res.json(newDevice);
+});
+
+app.delete('/api/admin/wearables/:id', authMiddleware, adminMiddleware, (req, res) => {
+  const wearables = readDB('wearables');
+  const filtered = wearables.filter((device) => device.id !== req.params.id);
+  writeDB('wearables', filtered);
+  res.json({ message: 'Wearable deleted' });
 });
 
 // Get dashboard stats (admin only)
