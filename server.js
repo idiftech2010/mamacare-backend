@@ -486,7 +486,8 @@ app.put('/api/auth/me', authMiddleware, (req, res) => {
 
 // Submit risk assessment
 app.post('/api/risk-assessment', authMiddleware, (req, res) => {
-  const { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate, symptoms, notes } = req.body;
+  const { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate, pregnancyWeek, symptoms, notes } = req.body;
+  const pregnancyWeekNum = pregnancyWeek ? parseInt(pregnancyWeek, 10) : undefined;
   
   let riskScore = 0;
   const factors = [];
@@ -586,6 +587,7 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
     userId: req.user.userId,
     timestamp: new Date().toISOString(),
     vitals: { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate },
+    pregnancyWeek: pregnancyWeekNum,
     symptoms: symptoms || [],
     notes: notes || '',
     result: {
