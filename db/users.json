@@ -1,0 +1,30 @@
+[
+  {
+    "id": "b04e8311-39d2-455d-9066-e0ffee86c8d9",
+    "email": "superadmin@mamacare.app",
+    "password": "superadmin123",
+    "name": "Super Admin",
+    "phone": "+234 800 000 0000",
+    "authProvider": "email",
+    "role": "superadmin",
+    "profile": {
+      "age": 35,
+      "bloodType": "O+"
+    },
+    "createdAt": "2026-04-09T15:05:21.191Z"
+  },
+  {
+    "id": "be8e6f87-5158-4cc0-9425-d45171f24945",
+    "email": "admin@mamacare.app",
+    "password": "admin123",
+    "name": "Admin User",
+    "phone": "+234 800 000 0001",
+    "authProvider": "email",
+    "role": "admin",
+    "profile": {
+      "age": 30,
+      "bloodType": "A+"
+    },
+    "createdAt": "2026-04-09T15:05:21.192Z"
+  }
+]

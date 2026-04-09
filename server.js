@@ -24,23 +24,22 @@ const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'mamacare_demo_secret_key_2025';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mamacare';
 
+// Flag to track MongoDB connection status
+let mongoDBConnected = false;
+
 // Connect to MongoDB
 const connectDB = async () => {
-  if (!process.env.MONGODB_URI) {
-    console.log('⚠️  MONGODB_URI not set. Using file-based storage for development.');
-    console.log('   To use MongoDB Atlas, set MONGODB_URI environment variable.');
-    return;
-  }
-  
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log('✓ Connected to MongoDB Atlas');
+    mongoDBConnected = true;
+    console.log('✓ Connected to MongoDB');
     
     // Initialize default data after connection
     await initDefaultUsers();
     await initDoctors();
   } catch (error) {
-    console.error('✗ MongoDB connection error:', error.message);
+    mongoDBConnected = false;
+    console.error('⚠️  MongoDB connection error:', error.message);
     console.log('⚠️  Falling back to file-based storage');
   }
 };
@@ -72,6 +71,75 @@ app.use(cors({
 
 app.use(express.json());
 
+// ==================== FILE-BASED STORAGE UTILITIES ====================
+const dbDir = path.join(__dirname, 'db');
+if (!fs.existsSync(dbDir)) {
+  fs.mkdirSync(dbDir, { recursive: true });
+}
+
+const readDB = (collection) => {
+  const filePath = path.join(dbDir, `${collection}.json`);
+  try {
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error(`Error reading ${collection}:`, error.message);
+  }
+  return [];
+};
+
+const writeDB = (collection, data) => {
+  const filePath = path.join(dbDir, `${collection}.json`);
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+  } catch (error) {
+    console.error(`Error writing ${collection}:`, error.message);
+  }
+};
+
+// Initialize default users in file storage if not present
+const initDefaultUsersFile = () => {
+  const users = readDB('users');
+  if (users.length === 0) {
+    const defaultUsers = [
+      {
+        id: uuidv4(),
+        email: 'superadmin@mamacare.app',
+        password: 'superadmin123',
+        name: 'Super Admin',
+        phone: '+234 800 000 0000',
+        authProvider: 'email',
+        role: 'superadmin',
+        profile: {
+          age: 35,
+          bloodType: 'O+',
+        },
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: uuidv4(),
+        email: 'admin@mamacare.app',
+        password: 'admin123',
+        name: 'Admin User',
+        phone: '+234 800 000 0001',
+        authProvider: 'email',
+        role: 'admin',
+        profile: {
+          age: 30,
+          bloodType: 'A+',
+        },
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    writeDB('users', defaultUsers);
+    console.log('✓ Default users initialized in file storage');
+  }
+};
+
+initDefaultUsersFile();
+
 // Health check endpoint (for monitoring)
 app.get('/health', (req, res) => {
   res.json({ 
@@ -83,7 +151,7 @@ app.get('/health', (req, res) => {
 
 // Initialize default users
 const initDefaultUsers = async () => {
-  if (mongoose.connection.readyState !== 1) {
+  if (!mongoDBConnected) {
     console.log('⚠️  MongoDB not connected, skipping user initialization');
     return;
   }
@@ -137,7 +205,7 @@ const initDefaultUsers = async () => {
 
 // Initialize default doctors
 const initDoctors = async () => {
-  if (mongoose.connection.readyState !== 1) {
+  if (!mongoDBConnected) {
     console.log('⚠️  MongoDB not connected, skipping doctor initialization');
     return;
   }
@@ -337,7 +405,33 @@ app.post('/api/auth/login', async (req, res) => {
   const { email, password, authProvider } = req.body;
   
   try {
-    const user = await User.findOne({ email });
+    // Try MongoDB first if connected
+    if (mongoDBConnected) {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      if (authProvider === 'email' && user.password !== password) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+      user.lastLogin = new Date();
+      await user.save();
+      
+      const token = jwt.sign(
+        { userId: user._id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+      
+      return res.json({
+        token,
+        user: { ...user.toObject(), password: undefined },
+      });
+    }
+    
+    // Fallback to file-based storage
+    const users = readDB('users');
+    const user = users.find(u => u.email === email);
     
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -347,18 +441,20 @@ app.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     
-    user.lastLogin = new Date();
-    await user.save();
+    user.lastLogin = new Date().toISOString();
+    const userIndex = users.findIndex(u => u.email === email);
+    users[userIndex] = user;
+    writeDB('users', users);
     
     const token = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role },
+      { userId: user.id, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
     
     res.json({
       token,
-      user: { ...user.toObject(), password: undefined },
+      user: { ...user, password: undefined },
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -371,10 +467,51 @@ app.post('/api/auth/google', async (req, res) => {
   const { email, name, googleId } = req.body;
   
   try {
-    let user = await User.findOne({ email });
+    // Try MongoDB first if connected
+    if (mongoDBConnected) {
+      let user = await User.findOne({ email });
+      
+      if (!user) {
+        user = new User({
+          email,
+          name,
+          password: null,
+          authProvider: 'google',
+          googleId,
+          role: 'user',
+          profile: {
+            age: null,
+            dueDate: null,
+            bloodType: null,
+            allergies: [],
+            medications: [],
+          },
+        });
+        await user.save();
+      } else {
+        user.lastLogin = new Date();
+        await user.save();
+      }
+      
+      const token = jwt.sign(
+        { userId: user._id, email: user.email, role: user.role },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+      );
+      
+      return res.json({
+        token,
+        user: { ...user.toObject(), password: undefined },
+      });
+    }
+    
+    // Fallback to file-based storage
+    const users = readDB('users');
+    let user = users.find(u => u.email === email);
     
     if (!user) {
-      user = new User({
+      user = {
+        id: uuidv4(),
         email,
         name,
         password: null,
@@ -385,25 +522,27 @@ app.post('/api/auth/google', async (req, res) => {
           age: null,
           dueDate: null,
           bloodType: null,
-          allergies: [],
-          medications: [],
         },
-      });
-      await user.save();
+        createdAt: new Date().toISOString(),
+      };
+      users.push(user);
+      writeDB('users', users);
     } else {
-      user.lastLogin = new Date();
-      await user.save();
+      user.lastLogin = new Date().toISOString();
+      const userIndex = users.findIndex(u => u.email === email);
+      users[userIndex] = user;
+      writeDB('users', users);
     }
     
     const token = jwt.sign(
-      { userId: user._id, email: user.email, role: user.role },
+      { userId: user.id, email: user.email, role: user.role },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
     
     res.json({
       token,
-      user: { ...user.toObject(), password: undefined },
+      user: { ...user, password: undefined },
     });
   } catch (error) {
     console.error('Google auth error:', error);
@@ -676,8 +815,15 @@ app.get('/api/doctors/:id', async (req, res) => {
 // Get all users (admin only)
 app.get('/api/admin/users', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const users = await User.find({});
-    res.json(users.map(u => ({ ...u.toObject(), password: undefined })));
+    // Try MongoDB first if connected
+    if (mongoDBConnected) {
+      const users = await User.find({});
+      return res.json(users.map(u => ({ ...u.toObject(), password: undefined })));
+    }
+    
+    // Fallback to file-based storage
+    const users = readDB('users');
+    res.json(users.map(u => ({ ...u, password: undefined })));
   } catch (error) {
     console.error('Get users error:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -713,7 +859,14 @@ app.put('/api/admin/users/:id/role', authMiddleware, superadminMiddleware, async
 // Get all records (admin only)
 app.get('/api/admin/records', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const records = await RiskAssessment.find({}).populate('userId', 'name email');
+    // Try MongoDB first if connected
+    if (mongoDBConnected) {
+      const records = await RiskAssessment.find({}).populate('userId', 'name email');
+      return res.json(records);
+    }
+    
+    // Fallback to file-based storage
+    const records = readDB('records');
     res.json(records);
   } catch (error) {
     console.error('Get records error:', error);
