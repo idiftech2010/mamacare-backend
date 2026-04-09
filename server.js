@@ -22,7 +22,16 @@ const app = express();
 // Use PORT from environment (for cloud) or fallback to 5000 (for local)
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'mamacare_demo_secret_key_2025';
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mamacare';
+
+const rawMongoUri = process.env.MONGODB_URI;
+const MONGODB_URI = rawMongoUri
+  ? rawMongoUri.trim().replace(/\s+/g, '')
+  : 'mongodb://localhost:27017/mamacare';
+
+console.log(`MONGODB_URI ${rawMongoUri ? 'is set' : 'is not set'}`);
+if (rawMongoUri) {
+  console.log('MongoDB URI checked and normalized for connection.');
+}
 
 // Flag to track MongoDB connection status
 let mongoDBConnected = false;
@@ -30,7 +39,10 @@ let mongoDBConnected = false;
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     mongoDBConnected = true;
     console.log('✓ Connected to MongoDB');
     
