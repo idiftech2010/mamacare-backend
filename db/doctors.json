@@ -1,0 +1,94 @@
+[
+  {
+    "id": "fdb841ec-4ed3-4d72-95b6-541981aa7cbd",
+    "name": "Dr. Amara Okafor",
+    "specialty": "Obstetrics & Gynecology",
+    "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop",
+    "bio": "Experienced obstetrician with over 15 years in maternal healthcare",
+    "languages": [
+      "English",
+      "Yoruba"
+    ],
+    "rating": 4.8,
+    "reviews": 156,
+    "available": true,
+    "nextAvailable": "Today, 2:00 PM",
+    "ethnicity": "black",
+    "email": "amara.okafor@mamacare.app",
+    "phone": "+234 803 123 4567",
+    "education": "University of Lagos Medical School",
+    "certifications": [
+      "FWACS",
+      "FRCOG"
+    ]
+  },
+  {
+    "id": "53f35178-2c25-4331-8e32-6b2fd95099fe",
+    "name": "Dr. Ngozi Ademola",
+    "specialty": "Maternal-Fetal Medicine",
+    "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&h=400&fit=crop",
+    "bio": "Specialist in high-risk pregnancies and fetal medicine",
+    "languages": [
+      "English",
+      "Yoruba"
+    ],
+    "rating": 4.7,
+    "reviews": 84,
+    "available": false,
+    "nextAvailable": "Monday, 9:00 AM",
+    "ethnicity": "black",
+    "email": "ngozi.adeyemi@mamacare.app",
+    "phone": "+234 804 567 8901",
+    "education": "University of Ibadan Medical School",
+    "certifications": [
+      "FWACS",
+      "FRCOG"
+    ]
+  },
+  {
+    "id": "ae0ee93b-f219-4f0e-92fa-f78973d66887",
+    "name": "Dr. Aisha Hassan",
+    "specialty": "Midwifery & Natural Birth",
+    "image": "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=400&h=400&fit=crop",
+    "bio": "Advocate for natural childbirth methods",
+    "languages": [
+      "English",
+      "Hausa",
+      "Arabic"
+    ],
+    "rating": 4.8,
+    "reviews": 112,
+    "available": true,
+    "nextAvailable": "Today, 6:00 PM",
+    "ethnicity": "arab",
+    "email": "aisha.hassan@mamacare.app",
+    "phone": "+234 805 678 9012",
+    "education": "Ahmadu Bello University",
+    "certifications": [
+      "RM",
+      "BSc Midwifery"
+    ]
+  },
+  {
+    "id": "175bd5d5-aca1-4741-b0f8-b0349979a6f0",
+    "name": "Dr. Emily Johnson",
+    "specialty": "Pediatric Obstetrics",
+    "image": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=400&h=400&fit=crop",
+    "bio": "Focused on teen pregnancy and education",
+    "languages": [
+      "English"
+    ],
+    "rating": 4.9,
+    "reviews": 143,
+    "available": true,
+    "nextAvailable": "Tomorrow, 11:30 AM",
+    "ethnicity": "white",
+    "email": "emily.johnson@mamacare.app",
+    "phone": "+234 806 789 0123",
+    "education": "Harvard Medical School",
+    "certifications": [
+      "FACOG",
+      "MPH"
+    ]
+  }
+]
