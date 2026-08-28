@@ -1,18 +1,26 @@
 // MamaCare Backend - Production Ready
 // Supports both local development and cloud deployment
 
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const path = require('path');
+const OpenAI = require('openai');
+const { buildRiskAssessment } = require('./riskAssessment');
 
 const app = express();
 
 // Use PORT from environment (for cloud) or fallback to 5000 (for local)
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || 'mamacare_demo_secret_key_2025';
+
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+}) : null;
 
 // ==================== FILE-BASED STORAGE UTILITIES ====================
 const dbDir = path.join(__dirname, 'db');
@@ -163,6 +171,17 @@ const initDefaultDoctorsFile = () => {
 initDefaultUsersFile();
 initDefaultDoctorsFile();
 
+// Initialize default records file if missing so assessments are always stored reliably
+const initDefaultRecordsFile = () => {
+  const records = readDB('records');
+  if (records.length === 0) {
+    writeDB('records', []);
+    console.log('✓ Default records file initialized in file storage');
+  }
+};
+
+initDefaultRecordsFile();
+
 // CORS - Allow requests from deployed frontend and localhost
 const allowedOrigins = [
   'https://swlo76a2ti7h2.ok.kimi.link',  // Your deployed frontend
@@ -196,9 +215,6 @@ app.get('/health', (req, res) => {
     version: '1.0.0'
   });
 });
-
-initDefaultUsersFile();
-initDefaultDoctorsFile();
 
 // Authentication middleware
 const authMiddleware = (req, res, next) => {
@@ -387,8 +403,15 @@ app.put('/api/auth/me', authMiddleware, (req, res) => {
 
 // Submit risk assessment
 app.post('/api/risk-assessment', authMiddleware, (req, res) => {
-  const { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate, pregnancyWeek, symptoms, notes } = req.body;
+  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes } = req.body;
+  if (bodyTemp > 43 || bodyTemp < 34) {
+    return res.status(400).json({ error: 'Invalid data: Out of physiological range' });
+  }
   const pregnancyWeekNum = pregnancyWeek ? parseInt(pregnancyWeek, 10) : undefined;
+  const records = readDB('records');
+  const previousAssessment = records
+    .filter(record => record.userId === req.user.userId)
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
   // Risk calculation logic (same as before)
   let riskScore = 0;
   const factors = [];
@@ -461,11 +484,18 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
       }
     });
   }
+
+  const modelResult = buildRiskAssessment({
+    age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate,
+    pregnancyWeek: pregnancyWeekNum,
+    symptoms: Array.isArray(symptoms) ? symptoms : [],
+    previousRisk: previousAssessment?.riskState ?? previousAssessment?.result?.riskState,
+  });
   
   // Determine risk level
   let level, recommendations;
   
-  if (riskScore >= 60) {
+  if (modelResult.score >= 60) {
     level = 'high';
     recommendations = [
       'Schedule immediate consultation with your healthcare provider',
@@ -474,7 +504,7 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
       'Stay hydrated and maintain healthy diet',
       'Contact emergency services if symptoms worsen',
     ];
-  } else if (riskScore >= 30) {
+  } else if (modelResult.score >= 30) {
     level = 'medium';
     recommendations = [
       'Schedule a check-up within the next week',
@@ -501,17 +531,11 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
     pregnancyWeek: pregnancyWeekNum,
     symptoms: symptoms || [],
     notes: notes || '',
-    result: {
-      level,
-      score: riskScore,
-      confidence: Math.min(95, 70 + Math.random() * 20),
-      factors: factors.length > 0 ? factors : ['All vitals within normal range'],
-      recommendations,
-    },
+    result: { ...modelResult, recommendations },
+    riskState: modelResult.level === 'high' ? 2 : modelResult.level === 'medium' ? 1 : 0,
     timestamp: new Date().toISOString(),
   };
 
-  const records = readDB('records');
   records.push(assessment);
   writeDB('records', records);
 
@@ -526,48 +550,40 @@ app.get('/api/risk-assessment/history', authMiddleware, (req, res) => {
 });
 
 // Chat support route
-app.post('/api/chat', (req, res) => {
+app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
   const text = (message || '').toString().trim();
-  const normalized = text.toLowerCase();
 
   if (!text) {
     return res.status(400).json({ response: 'Please type your question so MamaCare can help.' });
   }
 
-  const knowledge = [
-    {
-      triggers: ['risk assessment', 'risk', 'score', 'assessment'],
-      reply: 'Mamacare AI analyzes your vital signs and symptoms to estimate your pregnancy risk level. Please complete the risk assessment form on the website to receive personalized guidance.',
-    },
-    {
-      triggers: ['wearable', 'device', 'wearables', 'watch', 'band', 'ring'],
-      reply: 'Our wearable devices help track your vital signs and support continuous monitoring. You can view available devices on the Wearables page and see pricing or order information there.',
-    },
-    {
-      triggers: ['telemedicine', 'doctor', 'appointment', 'consultation'],
-      reply: 'You can connect with maternal health specialists through our Telemedicine section. Book a consultation or view the available healthcare providers there.',
-    },
-    {
-      triggers: ['emergency', 'urgent', 'help now', 'danger'],
-      reply: 'If this is an emergency, please call your local emergency number immediately. For urgent pregnancy concerns, contact a healthcare provider right away.',
-    },
-    {
-      triggers: ['register', 'login', 'signup', 'sign up', 'sign in'],
-      reply: 'To use full MamaCare features, register or login first. This also ensures your assessments and records are saved for the admin dashboard.',
-    },
-    {
-      triggers: ['support', 'chat', 'help', 'question'],
-      reply: 'MamaCare support is available 24/7. Ask any question about pregnancy, nutrition, symptoms, or device support, and I will help you navigate the platform.',
-    },
-  ];
+  if (!openai) {
+    return res.status(500).json({ response: 'AI service is not configured. Please contact support.' });
+  }
 
-  const match = knowledge.find((item) => item.triggers.some((trigger) => normalized.includes(trigger)));
-  const response = match
-    ? match.reply
-    : 'Mamacare is an AI-assisted maternal health companion. I can help you with pregnancy risk assessment, telemedicine, wearable devices, and support resources. Please ask about your symptoms, a feature, or how to get started.';
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are MamaCare AI, a helpful maternal health assistant. Provide accurate, supportive information about pregnancy, nutrition, symptoms, and maternal care. Always advise consulting healthcare professionals for medical advice. Keep responses concise and caring.'
+        },
+        {
+          role: 'user',
+          content: text
+        }
+      ],
+      max_tokens: 500,
+    });
 
-  res.json({ response });
+    const response = completion.choices[0].message.content || 'I apologize, but I cannot provide a response at this time. Please try again.';
+    res.json({ response });
+  } catch (error) {
+    console.error('OpenAI API error:', error);
+    res.status(500).json({ response: 'I apologize, but I cannot process your request at this time. Please ensure you have a stable internet connection and try again.' });
+  }
 });
 
 // ==================== DOCTOR ROUTES ====================

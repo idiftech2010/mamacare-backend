@@ -1,0 +1,657 @@
+[
+  {
+    "id": "e66995eb-b4fc-4db3-8036-7fd2b38dc737",
+    "userId": "b04e8311-39d2-455d-9066-e0ffee86c8d9",
+    "vitals": {
+      "age": 29,
+      "systolicBP": 112,
+      "diastolicBP": 79,
+      "bloodSugar": 7.8,
+      "bodyTemp": 34.5,
+      "heartRate": 79
+    },
+    "pregnancyWeek": 8,
+    "symptoms": [
+      "Headache",
+      "Abdominal Pain",
+      "Fever"
+    ],
+    "notes": "",
+    "result": {
+      "score": 39,
+      "level": "medium",
+      "confidence": 77.8,
+      "factors": [
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Abdominal Pain",
+        "Symptom: Fever"
+      ],
+      "vitalContributions": [],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 112,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 79,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature",
+          "vitalValue": 34.5,
+          "relationship": "Fever is supported by the elevated temperature reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 112,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 79,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "previousRisk": null,
+      "deltaRisk": null,
+      "alertStatus": "Routine Monitoring",
+      "recommendations": [
+        "Schedule a check-up within the next week",
+        "Monitor your blood pressure daily",
+        "Maintain a balanced diet low in sugar and salt",
+        "Ensure adequate rest and light exercise",
+        "Track your symptoms and report changes"
+      ]
+    },
+    "riskState": 1,
+    "timestamp": "2026-08-27T21:09:50.893Z"
+  },
+  {
+    "id": "1d4a7c3d-888e-411d-9d38-4529ebd41e9a",
+    "userId": "b04e8311-39d2-455d-9066-e0ffee86c8d9",
+    "vitals": {
+      "age": 15,
+      "systolicBP": 145,
+      "diastolicBP": 91,
+      "bloodSugar": 9,
+      "bodyTemp": 41,
+      "heartRate": 89
+    },
+    "pregnancyWeek": 3,
+    "symptoms": [
+      "Abdominal Pain",
+      "Fever",
+      "Severe Swelling",
+      "Difficulty Breathing",
+      "Nausea/Vomiting"
+    ],
+    "notes": "",
+    "result": {
+      "score": 161,
+      "level": "high",
+      "confidence": 90,
+      "factors": [
+        "Higher than optimal blood sugar",
+        "Young maternal age",
+        "High blood pressure",
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Abdominal Pain",
+        "Symptom: Fever",
+        "High-risk symptom: Severe Swelling",
+        "High-risk symptom: Difficulty Breathing"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar",
+          "contribution": 20,
+          "reason": "Higher than optimal blood sugar",
+          "value": 9
+        },
+        {
+          "feature": "age",
+          "label": "Age",
+          "contribution": 20,
+          "reason": "Young maternal age",
+          "value": 15
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure",
+          "contribution": 25,
+          "reason": "High blood pressure",
+          "value": 145
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure",
+          "contribution": 25,
+          "reason": "High blood pressure",
+          "value": 91
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 41
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "contribution": 15,
+          "reason": "High-risk symptom"
+        },
+        {
+          "symptom": "Difficulty Breathing",
+          "contribution": 15,
+          "reason": "High-risk symptom"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Severe Swelling",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 145,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 91,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature",
+          "vitalValue": 41,
+          "relationship": "Fever is supported by the elevated temperature reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Difficulty Breathing",
+          "vital": "heartRate",
+          "vitalLabel": "Heart rate",
+          "vitalValue": 89,
+          "relationship": "Breathing difficulty may warrant attention when heart rate is elevated.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar",
+          "vitalValue": 9,
+          "relationship": "Nausea or vomiting is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 145,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 91,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "observed"
+        }
+      ],
+      "previousRisk": null,
+      "deltaRisk": null,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ]
+    },
+    "riskState": 2,
+    "timestamp": "2026-08-27T21:12:29.902Z"
+  },
+  {
+    "id": "b6351189-fbf6-4ac1-a1c0-02518b7abc6c",
+    "userId": "b04e8311-39d2-455d-9066-e0ffee86c8d9",
+    "vitals": {
+      "age": 29,
+      "systolicBP": 132,
+      "diastolicBP": 85,
+      "bloodSugar": 10,
+      "bodyTemp": 47,
+      "heartRate": 90
+    },
+    "pregnancyWeek": 9,
+    "symptoms": [
+      "Headache",
+      "Severe Swelling",
+      "Abdominal Pain",
+      "Nausea/Vomiting",
+      "Fever"
+    ],
+    "notes": "",
+    "result": {
+      "score": 99,
+      "level": "high",
+      "confidence": 89.8,
+      "factors": [
+        "Higher than optimal blood sugar",
+        "Elevated blood pressure",
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "High-risk symptom: Severe Swelling",
+        "Symptom: Abdominal Pain",
+        "Symptom: Fever"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar",
+          "contribution": 20,
+          "reason": "Higher than optimal blood sugar",
+          "value": 10
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure",
+          "contribution": 15,
+          "reason": "Elevated blood pressure",
+          "value": 132
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 47
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "contribution": 15,
+          "reason": "High-risk symptom"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 132,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 85,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 132,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 85,
+          "relationship": "These symptoms can be clinically important when blood pressure is elevated.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature",
+          "vitalValue": 47,
+          "relationship": "Fever is supported by the elevated temperature reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar",
+          "vitalValue": 10,
+          "relationship": "Nausea or vomiting is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure",
+          "vitalValue": 132,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure",
+          "vitalValue": 85,
+          "relationship": "This symptom requires clinical review in the context of the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "previousRisk": null,
+      "deltaRisk": null,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ]
+    },
+    "riskState": 2,
+    "timestamp": "2026-08-27T22:09:33.525Z"
+  },
+  {
+    "id": "7271515e-0d25-496c-ae58-0268b5ead888",
+    "userId": "b04e8311-39d2-455d-9066-e0ffee86c8d9",
+    "vitals": {
+      "age": 37,
+      "systolicBP": 145,
+      "diastolicBP": 92,
+      "bloodSugar": 9.5,
+      "bodyTemp": 42,
+      "heartRate": 87
+    },
+    "pregnancyWeek": 9,
+    "symptoms": [
+      "Nausea/Vomiting",
+      "Headache",
+      "Severe Swelling",
+      "Abdominal Pain"
+    ],
+    "notes": "",
+    "result": {
+      "score": 131,
+      "level": "high",
+      "confidence": 90,
+      "factors": [
+        "Advanced maternal age",
+        "High blood pressure",
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "High-risk symptom: Severe Swelling",
+        "Symptom: Abdominal Pain"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 9.5,
+          "unit": "mg/dL"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 25,
+          "reason": "Advanced maternal age",
+          "value": 37,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 87,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 25,
+          "reason": "High blood pressure",
+          "value": 145,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 25,
+          "reason": "High blood pressure",
+          "value": 92,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 42,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "contribution": 15,
+          "reason": "High-risk symptom"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 145,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 92,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 145,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Severe Swelling",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 92,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 9.5,
+          "vitalUnit": "mg/dL",
+          "relationship": "The symptom is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 145,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 92,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Preeclampsia warning signs",
+          "status": "Needs clinical evaluation",
+          "evidence": [
+            "Blood pressure 145/92 mmHg",
+            "Selected symptom(s): Headache, Severe Swelling, Abdominal Pain"
+          ],
+          "note": "This is a screening flag, not a diagnosis."
+        },
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 42 °C"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        },
+        {
+          "name": "Obstetric warning symptoms",
+          "status": "Urgent clinical review",
+          "evidence": [
+            "Selected symptom(s): Severe Swelling"
+          ],
+          "note": "Urgency depends on clinical assessment and context."
+        },
+        {
+          "name": "Advanced maternal age risk factor",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Maternal age 37 years"
+          ]
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 2,
+      "deltaRisk": 0,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ]
+    },
+    "riskState": 2,
+    "timestamp": "2026-08-27T23:25:33.780Z"
+  }
+]
