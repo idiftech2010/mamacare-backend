@@ -171,6 +171,20 @@ const initDefaultDoctorsFile = () => {
 initDefaultUsersFile();
 initDefaultDoctorsFile();
 
+const ensurePatientIds = () => {
+  const users = readDB('users');
+  let changed = false;
+  users.forEach(user => {
+    if (user.role === 'user' && !user.patientId) {
+      user.patientId = createPatientId();
+      changed = true;
+    }
+  });
+  if (changed) writeDB('users', users);
+};
+
+ensurePatientIds();
+
 // Initialize default records file if missing so assessments are always stored reliably
 const initDefaultRecordsFile = () => {
   const records = readDB('records');
@@ -247,6 +261,15 @@ const superadminMiddleware = (req, res, next) => {
   next();
 };
 
+const clinicalMiddleware = (req, res, next) => {
+  if (!['clinician', 'data_entry', 'admin', 'superadmin'].includes(req.user?.role)) {
+    return res.status(403).json({ error: 'Clinical access required' });
+  }
+  next();
+};
+
+const createPatientId = () => `MC-${uuidv4().replace(/-/g, '').slice(0, 10).toUpperCase()}`;
+
 // ==================== AUTH ROUTES ====================
 
 // Register
@@ -261,6 +284,7 @@ app.post('/api/auth/register', (req, res) => {
 
   const newUser = {
     id: uuidv4(),
+    patientId: createPatientId(),
     email,
     password: authProvider === 'email' ? password : null,
     name,
@@ -296,8 +320,10 @@ app.post('/api/auth/register', (req, res) => {
 app.post('/api/auth/login', (req, res) => {
   const { email, password, authProvider } = req.body;
 
+  const normalizedEmail = (email || '').trim().toLowerCase();
+
   const users = readDB('users');
-  const user = users.find(u => u.email === email);
+  const user = users.find(u => u.email?.trim().toLowerCase() === normalizedEmail);
 
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
@@ -334,6 +360,7 @@ app.post('/api/auth/google', (req, res) => {
   if (!user) {
     user = {
       id: uuidv4(),
+      patientId: createPatientId(),
       email,
       name,
       password: null,
@@ -403,14 +430,21 @@ app.put('/api/auth/me', authMiddleware, (req, res) => {
 
 // Submit risk assessment
 app.post('/api/risk-assessment', authMiddleware, (req, res) => {
-  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes } = req.body;
+  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes, patientId } = req.body;
+  const users = readDB('users');
+  const requestedPatient = req.user.role === 'data_entry' && patientId ? patientId : req.user.userId;
+  const targetUser = users.find(user => user.id === requestedPatient || (patientId && user.patientId === patientId));
+  const assessmentUserId = targetUser?.id || req.user.userId;
   if (bodyTemp > 43 || bodyTemp < 34) {
     return res.status(400).json({ error: 'Invalid data: Out of physiological range' });
   }
   const pregnancyWeekNum = pregnancyWeek ? parseInt(pregnancyWeek, 10) : undefined;
   const records = readDB('records');
+  if (!targetUser) {
+    return res.status(404).json({ error: 'Patient not found' });
+  }
   const previousAssessment = records
-    .filter(record => record.userId === req.user.userId)
+    .filter(record => record.userId === assessmentUserId)
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())[0];
   // Risk calculation logic (same as before)
   let riskScore = 0;
@@ -526,7 +560,8 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
   
   const assessment = {
     id: uuidv4(),
-    userId: req.user.userId,
+    userId: assessmentUserId,
+    enteredBy: req.user.userId,
     vitals: { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate },
     pregnancyWeek: pregnancyWeekNum,
     symptoms: symptoms || [],
@@ -620,7 +655,6 @@ app.put('/api/admin/users/:id/role', authMiddleware, superadminMiddleware, (req,
     return res.status(400).json({ error: 'Invalid role. Must be user or admin' });
   }
 
-  const users = readDB('users');
   const user = users.find(u => u.id === req.params.id);
 
   if (!user) {
@@ -827,7 +861,7 @@ app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, (req, res
   const results = users.filter(user => {
     const matchesEmail = user.email && user.email.toLowerCase().includes(query);
     const matchesPhone = user.phone && user.phone.toLowerCase().includes(query);
-    const matchesId = user.id && user.id.toLowerCase().includes(query);
+    const matchesId = (user.patientId || user.id) && (user.patientId || user.id).toLowerCase().includes(query);
     const matchesName = user.name && user.name.toLowerCase().includes(query);
     
     return matchesEmail || matchesPhone || matchesId || matchesName;
@@ -836,6 +870,7 @@ app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, (req, res
   // Return user data without passwords
   const safeResults = results.map(user => ({
     id: user.id,
+    patientId: user.patientId || user.id,
     name: user.name,
     email: user.email,
     phone: user.phone,
@@ -845,6 +880,46 @@ app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, (req, res
   }));
   
   res.json(safeResults);
+});
+
+app.get('/api/admin/clinicians', authMiddleware, superadminMiddleware, (req, res) => {
+  const users = readDB('users');
+  res.json(users.filter(user => ['clinician', 'data_entry'].includes(user.role)).map(user => ({ ...user, password: undefined })));
+});
+
+app.post('/api/admin/clinicians', authMiddleware, superadminMiddleware, (req, res) => {
+  const { name, email, password, phone, clinicianType = 'clinician', specialty = '' } = req.body;
+  if (!name || !email || !password || !['clinician', 'data_entry'].includes(clinicianType)) {
+    return res.status(400).json({ error: 'Name, email, password, and a valid clinician type are required' });
+  }
+  const users = readDB('users');
+  if (users.some(user => user.email.toLowerCase() === email.toLowerCase())) {
+    return res.status(400).json({ error: 'A user with this email already exists' });
+  }
+  const clinician = { id: uuidv4(), email: email.toLowerCase(), password, name, phone: phone || '', specialty, authProvider: 'email', role: clinicianType, createdAt: new Date().toISOString() };
+  users.push(clinician);
+  writeDB('users', users);
+  res.status(201).json({ ...clinician, password: undefined });
+});
+
+app.get('/api/clinical/stats', authMiddleware, clinicalMiddleware, (req, res) => {
+  const users = readDB('users').filter(user => user.role === 'user');
+  const records = readDB('records');
+  res.json({ totalPatients: users.length, totalAssessments: records.length, highRisk: records.filter(record => record.result?.level === 'high').length });
+});
+
+app.get('/api/clinical/patients', authMiddleware, clinicalMiddleware, (req, res) => {
+  const users = readDB('users').filter(user => user.role === 'user');
+  const records = readDB('records');
+  res.json(users.map(user => ({ ...user, patientId: user.patientId || user.id, password: undefined, assessmentCount: records.filter(record => record.userId === user.id).length })));
+});
+
+app.get('/api/clinical/records', authMiddleware, clinicalMiddleware, (req, res) => {
+  const records = readDB('records');
+  const visibleRecords = ['admin', 'superadmin'].includes(req.user.role)
+    ? records
+    : records.filter(record => record.enteredBy === req.user.userId);
+  res.json(visibleRecords);
 });
 
 // ==================== START SERVER ====================

@@ -246,6 +246,8 @@ const initializeFirestore = async () => {
   await migrateJSONCollection('wearables');
   await migrateJSONCollection('records');
   await migrateJSONCollection('featuredTopics', initDefaultFeaturedTopics());
+  const users = await getAllDocs('users');
+  await Promise.all(users.filter(user => user.role === 'user' && !user.patientId).map(user => saveDoc('users', user.id, { patientId: createPatientId() })));
   console.log('✓ Firestore data initialization complete');
 };
 
@@ -301,6 +303,15 @@ const superadminMiddleware = (req, res, next) => {
   next();
 };
 
+const clinicalMiddleware = (req, res, next) => {
+  if (!['clinician', 'data_entry', 'admin', 'superadmin'].includes(req.user?.role)) {
+    return res.status(403).json({ error: 'Clinical access required' });
+  }
+  next();
+};
+
+const createPatientId = () => `MC-${uuidv4().replace(/-/g, '').slice(0, 10).toUpperCase()}`;
+
 const createToken = (user) => jwt.sign(
   { userId: user.id, email: user.email, role: user.role },
   JWT_SECRET,
@@ -325,6 +336,7 @@ app.post('/api/auth/register', async (req, res) => {
 
   const newUser = {
     id: uuidv4(),
+    patientId: createPatientId(),
     email,
     password,
     name,
@@ -353,7 +365,8 @@ app.post('/api/auth/login', async (req, res) => {
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
-  const user = await getDocByField('users', 'email', email);
+  const users = await getAllDocs('users');
+  const user = users.find((candidate) => candidate.email?.trim().toLowerCase() === email.trim().toLowerCase());
   if (!user || user.password !== password) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -374,6 +387,7 @@ app.post('/api/auth/google', async (req, res) => {
   if (!user) {
     user = {
       id: uuidv4(),
+      patientId: createPatientId(),
       email,
       name: name || email.split('@')[0],
       password: null,
@@ -416,13 +430,17 @@ app.put('/api/auth/me', authMiddleware, async (req, res) => {
 });
 
 app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
-  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes } = req.body;
+  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes, patientId } = req.body;
+  const assessmentUserId = req.user.role === 'data_entry' && patientId ? patientId : req.user.userId;
   if (bodyTemp > 43 || bodyTemp < 34) {
     return res.status(400).json({ error: 'Invalid data: Out of physiological range' });
   }
   const pregnancyWeekNum = pregnancyWeek ? parseInt(pregnancyWeek, 10) : undefined;
+  const users = await getAllDocs('users');
+  const targetUser = users.find(user => user.id === assessmentUserId || user.patientId === assessmentUserId);
+  if (!targetUser) return res.status(404).json({ error: 'Patient not found' });
   const previousSnapshot = await collectionRef('records')
-    .where('userId', '==', req.user.userId)
+    .where('userId', '==', targetUser.id)
     .orderBy('timestamp', 'desc')
     .limit(1)
     .get();
@@ -533,7 +551,8 @@ app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
 
   const assessment = {
     id: uuidv4(),
-    userId: req.user.userId,
+    userId: targetUser.id,
+    enteredBy: req.user.userId,
     vitals: { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate },
     pregnancyWeek: pregnancyWeekNum,
     symptoms: Array.isArray(symptoms) ? symptoms : [],
@@ -862,11 +881,13 @@ app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, async (re
     const phone = user.phone?.toLowerCase() || '';
     const name = user.name?.toLowerCase() || '';
     const id = user.id?.toLowerCase() || '';
-    return email.includes(queryValue) || phone.includes(queryValue) || name.includes(queryValue) || id.includes(queryValue);
+    const patientId = user.patientId?.toLowerCase() || '';
+    return email.includes(queryValue) || phone.includes(queryValue) || name.includes(queryValue) || id.includes(queryValue) || patientId.includes(queryValue);
   });
 
   const safeResults = results.map((user) => ({
     id: user.id,
+    patientId: user.patientId || user.id,
     name: user.name,
     email: user.email,
     phone: user.phone,
@@ -875,6 +896,42 @@ app.get('/api/admin/search-patients', authMiddleware, adminMiddleware, async (re
     lastLogin: user.lastLogin,
   }));
   res.json(safeResults);
+});
+
+app.get('/api/admin/clinicians', authMiddleware, superadminMiddleware, async (req, res) => {
+  const users = await getAllDocs('users');
+  res.json(users.filter(user => ['clinician', 'data_entry'].includes(user.role)).map(safeUser));
+});
+
+app.post('/api/admin/clinicians', authMiddleware, superadminMiddleware, async (req, res) => {
+  const { name, email, password, phone, clinicianType = 'clinician', specialty = '' } = req.body;
+  if (!name || !email || !password || !['clinician', 'data_entry'].includes(clinicianType)) {
+    return res.status(400).json({ error: 'Name, email, password, and a valid clinician type are required' });
+  }
+  if (await getDocByField('users', 'email', email.toLowerCase())) {
+    return res.status(400).json({ error: 'A user with this email already exists' });
+  }
+  const clinician = { id: uuidv4(), email: email.toLowerCase(), password, name, phone: phone || '', specialty, authProvider: 'email', role: clinicianType, createdAt: new Date().toISOString() };
+  await createDoc('users', clinician);
+  res.status(201).json(safeUser(clinician));
+});
+
+app.get('/api/clinical/stats', authMiddleware, clinicalMiddleware, async (req, res) => {
+  const [users, records] = await Promise.all([getAllDocs('users'), getAllDocs('records')]);
+  res.json({ totalPatients: users.filter(user => user.role === 'user').length, totalAssessments: records.length, highRisk: records.filter(record => record.result?.level === 'high').length });
+});
+
+app.get('/api/clinical/patients', authMiddleware, clinicalMiddleware, async (req, res) => {
+  const [users, records] = await Promise.all([getAllDocs('users'), getAllDocs('records')]);
+  res.json(users.filter(user => user.role === 'user').map(user => ({ ...safeUser(user), patientId: user.patientId || user.id, assessmentCount: records.filter(record => record.userId === user.id).length })));
+});
+
+app.get('/api/clinical/records', authMiddleware, clinicalMiddleware, async (req, res) => {
+  const records = await getAllDocs('records');
+  const visibleRecords = ['admin', 'superadmin'].includes(req.user.role)
+    ? records
+    : records.filter(record => record.enteredBy === req.user.userId);
+  res.json(visibleRecords);
 });
 
 app.listen(PORT, () => {

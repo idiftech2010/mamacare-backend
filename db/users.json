@@ -12,7 +12,7 @@
       "bloodType": "O+"
     },
     "createdAt": "2026-04-09T15:05:21.191Z",
-    "lastLogin": "2026-08-27T21:08:45.281Z"
+    "lastLogin": "2026-09-01T11:38:40.653Z"
   },
   {
     "id": "be8e6f87-5158-4cc0-9425-d45171f24945",
@@ -26,6 +26,31 @@
       "age": 30,
       "bloodType": "A+"
     },
-    "createdAt": "2026-04-09T15:05:21.192Z"
+    "createdAt": "2026-04-09T15:05:21.192Z",
+    "lastLogin": "2026-09-01T10:40:57.516Z"
+  },
+  {
+    "id": "dbbb18b6-951e-4c52-8e30-c73856e89445",
+    "email": "aadewale@mamacare.app",
+    "password": "Qwerty1.",
+    "name": "Dr Afeez Adewale",
+    "phone": "08125191913",
+    "specialty": "Obstetrics",
+    "authProvider": "email",
+    "role": "clinician",
+    "createdAt": "2026-09-01T07:58:12.357Z",
+    "lastLogin": "2026-09-01T12:25:10.786Z"
+  },
+  {
+    "id": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "email": "radio@mamacare.app",
+    "password": "Qwerty1.",
+    "name": "Razaq Adio",
+    "phone": "08125191913",
+    "specialty": "Obstetrics",
+    "authProvider": "email",
+    "role": "clinician",
+    "createdAt": "2026-09-01T07:58:31.003Z",
+    "lastLogin": "2026-09-01T11:54:49.223Z"
   }
 ]

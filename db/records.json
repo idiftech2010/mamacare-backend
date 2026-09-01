@@ -653,5 +653,208 @@
     },
     "riskState": 2,
     "timestamp": "2026-08-27T23:25:33.780Z"
+  },
+  {
+    "id": "15098232-42a2-46d1-b70c-429ba27342e4",
+    "userId": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "enteredBy": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "vitals": {
+      "age": 23,
+      "systolicBP": 120,
+      "diastolicBP": 87,
+      "bloodSugar": 8.5,
+      "bodyTemp": 39,
+      "heartRate": 82
+    },
+    "pregnancyWeek": 7,
+    "symptoms": [
+      "Headache",
+      "Dizziness",
+      "Nausea/Vomiting",
+      "Fever"
+    ],
+    "notes": "",
+    "result": {
+      "score": 76,
+      "level": "high",
+      "confidence": 85.2,
+      "factors": [
+        "Higher than optimal blood sugar",
+        "Elevated blood pressure",
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Fever"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 20,
+          "reason": "Higher than optimal blood sugar",
+          "value": 8.5,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 23,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 82,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 120,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 15,
+          "reason": "Elevated blood pressure",
+          "value": 87,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 39,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Dizziness",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 120,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 87,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 39,
+          "vitalUnit": "°C",
+          "relationship": "The symptom is directly compared with the body temperature reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 120,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 87,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "heartRate",
+          "vitalLabel": "Heart rate (bpm)",
+          "vitalValue": 82,
+          "vitalUnit": "bpm",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 8.5,
+          "vitalUnit": "mmol/L",
+          "relationship": "The symptom is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "observed"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Hyperglycemia risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Blood sugar 8.5 mmol/L"
+          ],
+          "note": "Confirm timing and local clinical reference range before interpretation."
+        },
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 39 °C",
+            "Selected symptom: Fever"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": null,
+      "deltaRisk": null,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ]
+    },
+    "riskState": 2,
+    "timestamp": "2026-09-01T10:29:44.829Z"
   }
 ]

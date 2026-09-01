@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node server.firestore.js",
     "start-local": "node server.js",
-    "dev": "nodemon server.firestore.js",
-    "dev-local": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "dev-local": "nodemon server.js",
+    "dev-firestore": "nodemon server.firestore.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
