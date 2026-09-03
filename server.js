@@ -50,6 +50,13 @@ const writeDB = (collection, data) => {
   }
 };
 
+const average = (values) => {
+  const measuredValues = values.filter((value) => typeof value === 'number' && Number.isFinite(value));
+  return measuredValues.length
+    ? measuredValues.reduce((total, value) => total + value, 0) / measuredValues.length
+    : 0;
+};
+
 // Initialize default users in file storage if not present
 const initDefaultUsersFile = () => {
   const users = readDB('users');
@@ -519,12 +526,19 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
     });
   }
 
+  const modelStartTime = process.hrtime.bigint();
+  const modelStartMemory = process.memoryUsage().heapUsed;
   const modelResult = buildRiskAssessment({
     age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate,
     pregnancyWeek: pregnancyWeekNum,
     symptoms: Array.isArray(symptoms) ? symptoms : [],
     previousRisk: previousAssessment?.riskState ?? previousAssessment?.result?.riskState,
   });
+  const modelEndMemory = process.memoryUsage().heapUsed;
+  const computationalPerformance = {
+    executionTimeMs: Number(process.hrtime.bigint() - modelStartTime) / 1e6,
+    memoryUtilizationMb: Math.max(0, modelEndMemory - modelStartMemory) / 1024 / 1024,
+  };
   
   // Determine risk level
   let level, recommendations;
@@ -566,7 +580,7 @@ app.post('/api/risk-assessment', authMiddleware, (req, res) => {
     pregnancyWeek: pregnancyWeekNum,
     symptoms: symptoms || [],
     notes: notes || '',
-    result: { ...modelResult, recommendations },
+    result: { ...modelResult, recommendations, computationalPerformance },
     riskState: modelResult.level === 'high' ? 2 : modelResult.level === 'medium' ? 1 : 0,
     timestamp: new Date().toISOString(),
   };
@@ -841,6 +855,11 @@ app.get('/api/admin/stats', authMiddleware, adminMiddleware, (req, res) => {
       low: records.filter(r => r.result.level === 'low').length,
       medium: records.filter(r => r.result.level === 'medium').length,
       high: records.filter(r => r.result.level === 'high').length,
+    },
+    computationalPerformance: {
+      measuredAssessments: records.filter(r => r.result?.computationalPerformance).length,
+      averageExecutionTimeMs: average(records.map(r => r.result?.computationalPerformance?.executionTimeMs)),
+      averageMemoryUtilizationMb: average(records.map(r => r.result?.computationalPerformance?.memoryUtilizationMb)),
     },
     recentUsers: users.slice(-5).reverse(),
     recentAssessments: records.slice(-5).reverse(),

@@ -12,7 +12,7 @@
       "bloodType": "O+"
     },
     "createdAt": "2026-04-09T15:05:21.191Z",
-    "lastLogin": "2026-09-01T11:38:40.653Z"
+    "lastLogin": "2026-09-03T16:24:54.608Z"
   },
   {
     "id": "be8e6f87-5158-4cc0-9425-d45171f24945",
@@ -51,6 +51,6 @@
     "authProvider": "email",
     "role": "clinician",
     "createdAt": "2026-09-01T07:58:31.003Z",
-    "lastLogin": "2026-09-01T11:54:49.223Z"
+    "lastLogin": "2026-09-03T16:25:49.881Z"
   }
 ]

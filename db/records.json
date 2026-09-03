@@ -856,5 +856,177 @@
     },
     "riskState": 2,
     "timestamp": "2026-09-01T10:29:44.829Z"
+  },
+  {
+    "id": "6dda7983-2c17-4011-a049-17684a9db72d",
+    "userId": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "enteredBy": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "vitals": {
+      "age": 28,
+      "systolicBP": 119,
+      "diastolicBP": 83,
+      "bloodSugar": 7.4,
+      "bodyTemp": 38.6,
+      "heartRate": 79
+    },
+    "pregnancyWeek": 8,
+    "symptoms": [
+      "Headache",
+      "Abdominal Pain",
+      "Nausea/Vomiting"
+    ],
+    "notes": "",
+    "result": {
+      "score": 41,
+      "level": "medium",
+      "confidence": 78.2,
+      "factors": [
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Abdominal Pain"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 7.4,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 28,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 79,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 119,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 83,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 38.6,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        }
+      ],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 119,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 83,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 7.4,
+          "vitalUnit": "mmol/L",
+          "relationship": "The symptom is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 119,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 83,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 38.6 °C"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 2,
+      "deltaRisk": -1,
+      "alertStatus": "Routine Monitoring",
+      "recommendations": [
+        "Schedule a check-up within the next week",
+        "Monitor your blood pressure daily",
+        "Maintain a balanced diet low in sugar and salt",
+        "Ensure adequate rest and light exercise",
+        "Track your symptoms and report changes"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 4.835,
+        "memoryUtilizationMb": 0.05333709716796875
+      }
+    },
+    "riskState": 1,
+    "timestamp": "2026-09-03T16:26:43.457Z"
   }
 ]
