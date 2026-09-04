@@ -37,6 +37,14 @@ const emptyPregnancyHistory = () => ({
   unknown: false,
 });
 
+function getPreviousPregnancyOutcomeCode(history) {
+  if (!history || typeof history !== 'object') return 0;
+  if (history.unknown || history.outcomes?.includes('Previous pregnancy outcome unknown')) return 3;
+  if (history.outcomes?.includes('Previous pregnancy with multiple births')) return 2;
+  if (history.previousMultiplePregnancy === true || history.outcomes?.includes('Previous multiple pregnancy')) return 1;
+  return 0;
+}
+
 function normalizePreviousPregnancyHistory(history) {
   if (!history || typeof history !== 'object') return emptyPregnancyHistory();
   const normalized = emptyPregnancyHistory();
@@ -48,6 +56,7 @@ function normalizePreviousPregnancyHistory(history) {
   normalized.deliveryMethods = Array.isArray(history.deliveryMethods) ? [...new Set(history.deliveryMethods.map(String))] : [];
   normalized.complications = Array.isArray(history.complications) ? [...new Set(history.complications.map(String))] : [];
   normalized.unknown = history.unknown === true;
+  normalized.previousPregnancyOutcomeCode = getPreviousPregnancyOutcomeCode(normalized);
   return normalized;
 }
 
@@ -213,4 +222,4 @@ function buildRiskAssessment({ age, systolicBP, diastolicBP, bloodSugar, bloodSu
   };
 }
 
-module.exports = { buildRiskAssessment, normalizePreviousPregnancyHistory, validatePreviousPregnancyHistory, validateSymptoms };
+module.exports = { buildRiskAssessment, getPreviousPregnancyOutcomeCode, normalizePreviousPregnancyHistory, validatePreviousPregnancyHistory, validateSymptoms };

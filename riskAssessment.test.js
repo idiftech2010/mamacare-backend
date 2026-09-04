@@ -2,6 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {
   buildRiskAssessment,
+  getPreviousPregnancyOutcomeCode,
   validatePreviousPregnancyHistory,
   validateSymptoms,
 } = require('./riskAssessment');
@@ -35,6 +36,13 @@ const baseInput = {
 test('accepts empty and unknown previous pregnancy history', () => {
   assert.equal(validatePreviousPregnancyHistory(undefined).history.unknown, false);
   assert.equal(validatePreviousPregnancyHistory({ ...baseHistory, unknown: true }).history.unknown, true);
+});
+
+test('codes previous pregnancy outcomes for dataset exports', () => {
+  assert.equal(getPreviousPregnancyOutcomeCode(undefined), 0);
+  assert.equal(getPreviousPregnancyOutcomeCode({ previousMultiplePregnancy: true }), 1);
+  assert.equal(getPreviousPregnancyOutcomeCode({ outcomes: ['Previous pregnancy with multiple births'] }), 2);
+  assert.equal(getPreviousPregnancyOutcomeCode({ unknown: true }), 3);
 });
 
 test('rejects negative counts and invalid count relationships', () => {

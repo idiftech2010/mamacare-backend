@@ -577,6 +577,7 @@ app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
     pregnancyWeek: pregnancyWeekNum,
     symptoms: symptomsValidation.symptoms,
     previousPregnancyHistory: historyValidation.history,
+    previousPregnancyOutcomeCode: historyValidation.history.previousPregnancyOutcomeCode,
     notes: notes || '',
     result: { ...modelResult, recommendations, computationalPerformance },
     riskState: modelResult.level === 'high' ? 2 : modelResult.level === 'medium' ? 1 : 0,
