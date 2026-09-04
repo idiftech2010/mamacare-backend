@@ -66,6 +66,18 @@ const riskAssessmentSchema = new mongoose.Schema({
   symptoms: [{
     type: String
   }],
+  previousPregnancyHistory: {
+    gravida: { type: Number, min: 0, default: null },
+    para: { type: Number, min: 0, default: null },
+    liveBirths: { type: Number, min: 0, default: null },
+    pregnancyLosses: { type: Number, min: 0, default: null },
+    previousCesareanSections: { type: Number, min: 0, default: null },
+    previousMultiplePregnancy: { type: Boolean, default: null },
+    outcomes: [String],
+    deliveryMethods: [String],
+    complications: [String],
+    unknown: { type: Boolean, default: false },
+  },
   notes: {
     type: String,
     default: ''

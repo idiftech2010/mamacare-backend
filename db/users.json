@@ -12,7 +12,7 @@
       "bloodType": "O+"
     },
     "createdAt": "2026-04-09T15:05:21.191Z",
-    "lastLogin": "2026-09-03T16:24:54.608Z"
+    "lastLogin": "2026-09-04T06:04:34.595Z"
   },
   {
     "id": "be8e6f87-5158-4cc0-9425-d45171f24945",
@@ -51,6 +51,24 @@
     "authProvider": "email",
     "role": "clinician",
     "createdAt": "2026-09-01T07:58:31.003Z",
-    "lastLogin": "2026-09-03T16:25:49.881Z"
+    "lastLogin": "2026-09-03T19:54:25.766Z"
+  },
+  {
+    "id": "591cee07-ae9a-47f2-a8c4-1935545ad56a",
+    "patientId": "MC-C687C07702",
+    "email": "rhas@mamacare.app",
+    "password": "Qwerty1.",
+    "name": "Rasheedah Hassan",
+    "phone": "+2348012345678",
+    "authProvider": "email",
+    "role": "user",
+    "profile": {
+      "age": null,
+      "dueDate": null,
+      "bloodType": null,
+      "allergies": [],
+      "medications": []
+    },
+    "createdAt": "2026-09-04T05:22:49.320Z"
   }
 ]

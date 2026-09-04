@@ -10,7 +10,7 @@ const admin = require('firebase-admin');
 const fs = require('fs');
 const path = require('path');
 const OpenAI = require('openai');
-const { buildRiskAssessment } = require('./riskAssessment');
+const { buildRiskAssessment, validatePreviousPregnancyHistory, validateSymptoms } = require('./riskAssessment');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -437,7 +437,11 @@ app.put('/api/auth/me', authMiddleware, async (req, res) => {
 });
 
 app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
-  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes, patientId } = req.body;
+  const { age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate, pregnancyWeek, symptoms, notes, patientId, previousPregnancyHistory } = req.body;
+  const historyValidation = validatePreviousPregnancyHistory(previousPregnancyHistory);
+  if (historyValidation.error) return res.status(400).json({ error: historyValidation.error });
+  const symptomsValidation = validateSymptoms(symptoms);
+  if (symptomsValidation.error) return res.status(400).json({ error: symptomsValidation.error });
   const assessmentUserId = req.user.role === 'data_entry' && patientId ? patientId : req.user.userId;
   if (bodyTemp > 43 || bodyTemp < 34) {
     return res.status(400).json({ error: 'Invalid data: Out of physiological range' });
@@ -522,7 +526,8 @@ app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
   const modelResult = buildRiskAssessment({
     age, systolicBP, diastolicBP, bloodSugar, bloodSugarUnit, bodyTemp, heartRate,
     pregnancyWeek: pregnancyWeekNum,
-    symptoms: Array.isArray(symptoms) ? symptoms : [],
+    symptoms: symptomsValidation.symptoms,
+    previousPregnancyHistory: historyValidation.history,
     previousRisk: previousAssessment?.riskState ?? previousAssessment?.result?.riskState,
   });
   const modelEndMemory = process.memoryUsage().heapUsed;
@@ -562,6 +567,7 @@ app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
       'Enjoy your pregnancy journey!',
     ];
   }
+  if (modelResult.urgentSymptoms.length) recommendations.unshift('Seek immediate professional medical care for the selected urgent symptom(s), regardless of this screening score');
 
   const assessment = {
     id: uuidv4(),
@@ -569,7 +575,8 @@ app.post('/api/risk-assessment', authMiddleware, async (req, res) => {
     enteredBy: req.user.userId,
     vitals: { age, systolicBP, diastolicBP, bloodSugar, bodyTemp, heartRate },
     pregnancyWeek: pregnancyWeekNum,
-    symptoms: Array.isArray(symptoms) ? symptoms : [],
+    symptoms: symptomsValidation.symptoms,
+    previousPregnancyHistory: historyValidation.history,
     notes: notes || '',
     result: { ...modelResult, recommendations, computationalPerformance },
     riskState: modelResult.level === 'high' ? 2 : modelResult.level === 'medium' ? 1 : 0,

@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.firestore.js",
     "start-local": "node server.js",
+    "test": "node --test riskAssessment.test.js",
     "dev": "nodemon server.js",
     "dev-local": "nodemon server.js",
     "dev-firestore": "nodemon server.firestore.js"

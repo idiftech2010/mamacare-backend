@@ -1028,5 +1028,1425 @@
     },
     "riskState": 1,
     "timestamp": "2026-09-03T16:26:43.457Z"
+  },
+  {
+    "id": "1bb1cb36-27bc-46ab-87d7-aa7018b6051d",
+    "userId": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "enteredBy": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "vitals": {
+      "age": 34,
+      "systolicBP": 130,
+      "diastolicBP": 85,
+      "bloodSugar": 8,
+      "bodyTemp": 39,
+      "heartRate": 79
+    },
+    "pregnancyWeek": 9,
+    "symptoms": [
+      "Nausea/Vomiting",
+      "Headache",
+      "Abdominal Pain"
+    ],
+    "previousPregnancyHistory": {
+      "gravida": null,
+      "para": null,
+      "liveBirths": null,
+      "pregnancyLosses": null,
+      "previousCesareanSections": null,
+      "previousMultiplePregnancy": null,
+      "outcomes": [
+        "Live birth"
+      ],
+      "deliveryMethods": [],
+      "complications": [],
+      "unknown": false
+    },
+    "notes": "",
+    "result": {
+      "score": 41,
+      "level": "medium",
+      "confidence": 78.2,
+      "factors": [
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Abdominal Pain"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 8,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 34,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 79,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 130,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 85,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 39,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "historyContributions": [],
+      "protectiveFactors": [],
+      "previousPregnancyHistory": {
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null,
+        "outcomes": [
+          "Live birth"
+        ],
+        "deliveryMethods": [],
+        "complications": [],
+        "unknown": false
+      },
+      "currentSymptoms": [
+        "Nausea/Vomiting",
+        "Headache",
+        "Abdominal Pain"
+      ],
+      "featureVector": {
+        "age": 34,
+        "systolicBP": 130,
+        "diastolicBP": 85,
+        "bloodSugar": 8,
+        "bodyTemp": 39,
+        "heartRate": 79,
+        "historyRisk_1": 0,
+        "historyRisk_2": 0,
+        "historyRisk_3": 0,
+        "historyRisk_4": 0,
+        "historyRisk_5": 0,
+        "historyRisk_6": 0,
+        "historyRisk_7": 0,
+        "historyRisk_8": 0,
+        "historyRisk_9": 0,
+        "historyRisk_10": 0,
+        "historyRisk_11": 0,
+        "historyRisk_12": 0,
+        "currentSymptom_Headache": 1,
+        "currentSymptom_Dizziness": 0,
+        "currentSymptom_BlurredVision": 0,
+        "currentSymptom_AbdominalPain": 1,
+        "currentSymptom_VaginalBleeding": 0,
+        "currentSymptom_SevereSwelling": 0,
+        "currentSymptom_ReducedFetalMovement": 0,
+        "currentSymptom_Fever": 0,
+        "currentSymptom_NauseaVomiting": 1,
+        "currentSymptom_DifficultyBreathing": 0,
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null
+      },
+      "modelVersion": "rule-based-lscdm-expanded-v1",
+      "expandedFeatureSetUsed": true,
+      "shapAvailable": false,
+      "riskProbabilities": {
+        "low": 0,
+        "medium": 1,
+        "high": 0
+      },
+      "urgentSymptoms": [],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 130,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 85,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 8,
+          "vitalUnit": "mmol/L",
+          "relationship": "The symptom is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 130,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 85,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 39 °C"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 1,
+      "deltaRisk": 0,
+      "alertStatus": "Routine Monitoring",
+      "recommendations": [
+        "Schedule a check-up within the next week",
+        "Monitor your blood pressure daily",
+        "Maintain a balanced diet low in sugar and salt",
+        "Ensure adequate rest and light exercise",
+        "Track your symptoms and report changes"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 2.5598,
+        "memoryUtilizationMb": 0.061248779296875
+      }
+    },
+    "riskState": 1,
+    "timestamp": "2026-09-03T19:44:20.397Z"
+  },
+  {
+    "id": "1731ce99-81dc-4360-8cb6-3fc526b38a53",
+    "userId": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "enteredBy": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "vitals": {
+      "age": 45,
+      "systolicBP": 125,
+      "diastolicBP": 89,
+      "bloodSugar": 8.2,
+      "bodyTemp": 39,
+      "heartRate": 81
+    },
+    "pregnancyWeek": 31,
+    "symptoms": [
+      "Fever",
+      "Abdominal Pain"
+    ],
+    "previousPregnancyHistory": {
+      "gravida": null,
+      "para": null,
+      "liveBirths": null,
+      "pregnancyLosses": null,
+      "previousCesareanSections": null,
+      "previousMultiplePregnancy": null,
+      "outcomes": [
+        "Ectopic pregnancy"
+      ],
+      "deliveryMethods": [
+        "Assisted vaginal delivery"
+      ],
+      "complications": [
+        "gestational hypertension"
+      ],
+      "unknown": false
+    },
+    "notes": "",
+    "result": {
+      "score": 94,
+      "level": "high",
+      "confidence": 88.8,
+      "factors": [
+        "Higher than optimal blood sugar",
+        "Advanced maternal age",
+        "Elevated blood pressure",
+        "Fever detected",
+        "Symptom: Fever",
+        "Symptom: Abdominal Pain",
+        "Previous gestational hypertension"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 20,
+          "reason": "Higher than optimal blood sugar",
+          "value": 8.2,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 25,
+          "reason": "Advanced maternal age",
+          "value": 45,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 81,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 125,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 15,
+          "reason": "Elevated blood pressure",
+          "value": 89,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 39,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "historyContributions": [
+        {
+          "feature": "gestational hypertension",
+          "label": "Previous gestational hypertension",
+          "contribution": 8,
+          "reason": "Historical risk pattern to discuss with a clinician"
+        }
+      ],
+      "protectiveFactors": [],
+      "previousPregnancyHistory": {
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null,
+        "outcomes": [
+          "Ectopic pregnancy"
+        ],
+        "deliveryMethods": [
+          "Assisted vaginal delivery"
+        ],
+        "complications": [
+          "gestational hypertension"
+        ],
+        "unknown": false
+      },
+      "currentSymptoms": [
+        "Fever",
+        "Abdominal Pain"
+      ],
+      "featureVector": {
+        "age": 45,
+        "systolicBP": 125,
+        "diastolicBP": 89,
+        "bloodSugar": 8.2,
+        "bodyTemp": 39,
+        "heartRate": 81,
+        "historyRisk_1": 0,
+        "historyRisk_2": 0,
+        "historyRisk_3": 1,
+        "historyRisk_4": 0,
+        "historyRisk_5": 0,
+        "historyRisk_6": 0,
+        "historyRisk_7": 0,
+        "historyRisk_8": 0,
+        "historyRisk_9": 0,
+        "historyRisk_10": 0,
+        "historyRisk_11": 0,
+        "historyRisk_12": 0,
+        "currentSymptom_Headache": 0,
+        "currentSymptom_Dizziness": 0,
+        "currentSymptom_BlurredVision": 0,
+        "currentSymptom_AbdominalPain": 1,
+        "currentSymptom_VaginalBleeding": 0,
+        "currentSymptom_SevereSwelling": 0,
+        "currentSymptom_ReducedFetalMovement": 0,
+        "currentSymptom_Fever": 1,
+        "currentSymptom_NauseaVomiting": 0,
+        "currentSymptom_DifficultyBreathing": 0,
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null
+      },
+      "modelVersion": "rule-based-lscdm-expanded-v1",
+      "expandedFeatureSetUsed": true,
+      "shapAvailable": false,
+      "riskProbabilities": {
+        "low": 0,
+        "medium": 0,
+        "high": 1
+      },
+      "urgentSymptoms": [],
+      "correlations": [
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 39,
+          "vitalUnit": "°C",
+          "relationship": "The symptom is directly compared with the body temperature reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 125,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 89,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Hyperglycemia risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Blood sugar 8.2 mmol/L"
+          ],
+          "note": "Confirm timing and local clinical reference range before interpretation."
+        },
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 39 °C",
+            "Selected symptom: Fever"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        },
+        {
+          "name": "Advanced maternal age risk factor",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Maternal age 45 years"
+          ]
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 1,
+      "deltaRisk": 1,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 3.665,
+        "memoryUtilizationMb": 0.06780242919921875
+      }
+    },
+    "riskState": 2,
+    "timestamp": "2026-09-03T19:56:38.907Z"
+  },
+  {
+    "id": "15992360-d60f-495e-933a-38a9d41ab276",
+    "userId": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "enteredBy": "b952d16d-d804-453d-8fa0-f644455b715f",
+    "vitals": {
+      "age": 34,
+      "systolicBP": 123,
+      "diastolicBP": 93,
+      "bloodSugar": 9,
+      "bodyTemp": 40,
+      "heartRate": 81
+    },
+    "pregnancyWeek": 9,
+    "symptoms": [
+      "Headache",
+      "Fever",
+      "Nausea/Vomiting",
+      "Abdominal Pain"
+    ],
+    "previousPregnancyHistory": {
+      "gravida": null,
+      "para": null,
+      "liveBirths": null,
+      "pregnancyLosses": null,
+      "previousCesareanSections": null,
+      "previousMultiplePregnancy": true,
+      "outcomes": [
+        "Miscarriage"
+      ],
+      "deliveryMethods": [
+        "No previous delivery"
+      ],
+      "complications": [
+        "fetal growth restriction"
+      ],
+      "unknown": false
+    },
+    "notes": "",
+    "result": {
+      "score": 99,
+      "level": "high",
+      "confidence": 89.8,
+      "factors": [
+        "Higher than optimal blood sugar",
+        "High blood pressure",
+        "Fever detected",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Fever",
+        "Symptom: Abdominal Pain",
+        "Previous pregnancy loss"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 20,
+          "reason": "Higher than optimal blood sugar",
+          "value": 9,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 34,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 81,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 123,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 25,
+          "reason": "High blood pressure",
+          "value": 93,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 10,
+          "reason": "Fever detected",
+          "value": 40,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "historyContributions": [
+        {
+          "feature": "Miscarriage",
+          "label": "Previous pregnancy loss",
+          "contribution": 5,
+          "reason": "Historical risk pattern to discuss with a clinician"
+        }
+      ],
+      "protectiveFactors": [],
+      "previousPregnancyHistory": {
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": true,
+        "outcomes": [
+          "Miscarriage"
+        ],
+        "deliveryMethods": [
+          "No previous delivery"
+        ],
+        "complications": [
+          "fetal growth restriction"
+        ],
+        "unknown": false
+      },
+      "currentSymptoms": [
+        "Headache",
+        "Fever",
+        "Nausea/Vomiting",
+        "Abdominal Pain"
+      ],
+      "featureVector": {
+        "age": 34,
+        "systolicBP": 123,
+        "diastolicBP": 93,
+        "bloodSugar": 9,
+        "bodyTemp": 40,
+        "heartRate": 81,
+        "historyRisk_1": 0,
+        "historyRisk_2": 0,
+        "historyRisk_3": 0,
+        "historyRisk_4": 0,
+        "historyRisk_5": 0,
+        "historyRisk_6": 0,
+        "historyRisk_7": 0,
+        "historyRisk_8": 1,
+        "historyRisk_9": 0,
+        "historyRisk_10": 0,
+        "historyRisk_11": 0,
+        "historyRisk_12": 0,
+        "currentSymptom_Headache": 1,
+        "currentSymptom_Dizziness": 0,
+        "currentSymptom_BlurredVision": 0,
+        "currentSymptom_AbdominalPain": 1,
+        "currentSymptom_VaginalBleeding": 0,
+        "currentSymptom_SevereSwelling": 0,
+        "currentSymptom_ReducedFetalMovement": 0,
+        "currentSymptom_Fever": 1,
+        "currentSymptom_NauseaVomiting": 1,
+        "currentSymptom_DifficultyBreathing": 0,
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": 1
+      },
+      "modelVersion": "rule-based-lscdm-expanded-v1",
+      "expandedFeatureSetUsed": true,
+      "shapAvailable": false,
+      "riskProbabilities": {
+        "low": 0,
+        "medium": 0,
+        "high": 1
+      },
+      "urgentSymptoms": [],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 123,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 93,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 40,
+          "vitalUnit": "°C",
+          "relationship": "The symptom is directly compared with the body temperature reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Nausea/Vomiting",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 9,
+          "vitalUnit": "mmol/L",
+          "relationship": "The symptom is recorded alongside the blood sugar reading for clinical review.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 123,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 93,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        }
+      ],
+      "historyCorrelations": [
+        {
+          "history": "Miscarriage",
+          "historyLabel": "Previous pregnancy loss",
+          "vital": "bloodSugar",
+          "vitalLabel": "Blood sugar (mmol/L)",
+          "vitalValue": 9,
+          "vitalUnit": "mmol/L",
+          "relationship": "Previous pregnancy history is reviewed alongside this current vital-sign risk signal.",
+          "strength": "observed"
+        },
+        {
+          "history": "Miscarriage",
+          "historyLabel": "Previous pregnancy loss",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 93,
+          "vitalUnit": "mmHg",
+          "relationship": "Previous pregnancy history is reviewed alongside this current vital-sign risk signal.",
+          "strength": "observed"
+        },
+        {
+          "history": "Miscarriage",
+          "historyLabel": "Previous pregnancy loss",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 40,
+          "vitalUnit": "°C",
+          "relationship": "Previous pregnancy history is reviewed alongside this current vital-sign risk signal.",
+          "strength": "observed"
+        }
+      ],
+      "riskCategories": [
+        {
+          "name": "Preeclampsia warning signs",
+          "status": "Needs clinical evaluation",
+          "evidence": [
+            "Blood pressure 123/93 mmHg",
+            "Selected symptom(s): Headache, Abdominal Pain"
+          ],
+          "note": "This is a screening flag, not a diagnosis."
+        },
+        {
+          "name": "Hyperglycemia risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Blood sugar 9 mmol/L"
+          ],
+          "note": "Confirm timing and local clinical reference range before interpretation."
+        },
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 40 °C",
+            "Selected symptom: Fever"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 2,
+      "deltaRisk": 0,
+      "alertStatus": "High-Risk Alert",
+      "recommendations": [
+        "Schedule immediate consultation with your healthcare provider",
+        "Monitor vitals every 4 hours",
+        "Rest and avoid strenuous activities",
+        "Stay hydrated and maintain healthy diet",
+        "Contact emergency services if symptoms worsen"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 8.4234,
+        "memoryUtilizationMb": 0.07546234130859375
+      }
+    },
+    "riskState": 2,
+    "timestamp": "2026-09-03T20:34:55.879Z"
+  },
+  {
+    "id": "9fc4c347-6570-4b66-9444-1c85c76ef622",
+    "userId": "591cee07-ae9a-47f2-a8c4-1935545ad56a",
+    "enteredBy": "591cee07-ae9a-47f2-a8c4-1935545ad56a",
+    "vitals": {
+      "age": 19,
+      "systolicBP": 131,
+      "diastolicBP": 69,
+      "bloodSugar": 7,
+      "bodyTemp": 36,
+      "heartRate": 79
+    },
+    "pregnancyWeek": 7,
+    "symptoms": [
+      "Headache",
+      "Dizziness",
+      "Abdominal Pain",
+      "Fever"
+    ],
+    "previousPregnancyHistory": {
+      "gravida": null,
+      "para": null,
+      "liveBirths": null,
+      "pregnancyLosses": null,
+      "previousCesareanSections": null,
+      "previousMultiplePregnancy": null,
+      "outcomes": [],
+      "deliveryMethods": [],
+      "complications": [],
+      "unknown": false
+    },
+    "notes": "",
+    "result": {
+      "score": 54,
+      "level": "medium",
+      "confidence": 80.8,
+      "factors": [
+        "Elevated blood pressure",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Abdominal Pain",
+        "Symptom: Fever"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 7,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 19,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 79,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 15,
+          "reason": "Elevated blood pressure",
+          "value": 131,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 69,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 36,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Dizziness",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "historyContributions": [],
+      "protectiveFactors": [],
+      "previousPregnancyHistory": {
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null,
+        "outcomes": [],
+        "deliveryMethods": [],
+        "complications": [],
+        "unknown": false
+      },
+      "currentSymptoms": [
+        "Headache",
+        "Dizziness",
+        "Abdominal Pain",
+        "Fever"
+      ],
+      "featureVector": {
+        "age": 19,
+        "systolicBP": 131,
+        "diastolicBP": 69,
+        "bloodSugar": 7,
+        "bodyTemp": 36,
+        "heartRate": 79,
+        "historyRisk_1": 0,
+        "historyRisk_2": 0,
+        "historyRisk_3": 0,
+        "historyRisk_4": 0,
+        "historyRisk_5": 0,
+        "historyRisk_6": 0,
+        "historyRisk_7": 0,
+        "historyRisk_8": 0,
+        "historyRisk_9": 0,
+        "historyRisk_10": 0,
+        "historyRisk_11": 0,
+        "historyRisk_12": 0,
+        "currentSymptom_Headache": 1,
+        "currentSymptom_Dizziness": 1,
+        "currentSymptom_BlurredVision": 0,
+        "currentSymptom_AbdominalPain": 1,
+        "currentSymptom_VaginalBleeding": 0,
+        "currentSymptom_SevereSwelling": 0,
+        "currentSymptom_ReducedFetalMovement": 0,
+        "currentSymptom_Fever": 1,
+        "currentSymptom_NauseaVomiting": 0,
+        "currentSymptom_DifficultyBreathing": 0,
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": null
+      },
+      "modelVersion": "rule-based-lscdm-expanded-v1",
+      "expandedFeatureSetUsed": true,
+      "shapAvailable": false,
+      "riskProbabilities": {
+        "low": 0,
+        "medium": 1,
+        "high": 0
+      },
+      "urgentSymptoms": [],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 36,
+          "vitalUnit": "°C",
+          "relationship": "The symptom is directly compared with the body temperature reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "heartRate",
+          "vitalLabel": "Heart rate (bpm)",
+          "vitalValue": 79,
+          "vitalUnit": "bpm",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "historyCorrelations": [],
+      "riskCategories": [
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 36 °C",
+            "Selected symptom: Fever"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": null,
+      "deltaRisk": null,
+      "alertStatus": "Routine Monitoring",
+      "recommendations": [
+        "Schedule a check-up within the next week",
+        "Monitor your blood pressure daily",
+        "Maintain a balanced diet low in sugar and salt",
+        "Ensure adequate rest and light exercise",
+        "Track your symptoms and report changes"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 4.0163,
+        "memoryUtilizationMb": 0.0609283447265625
+      }
+    },
+    "riskState": 1,
+    "timestamp": "2026-09-04T05:28:39.195Z"
+  },
+  {
+    "id": "eacde7f0-4735-483c-b3cd-f7a16e34ec1d",
+    "userId": "591cee07-ae9a-47f2-a8c4-1935545ad56a",
+    "enteredBy": "591cee07-ae9a-47f2-a8c4-1935545ad56a",
+    "vitals": {
+      "age": 19,
+      "systolicBP": 131,
+      "diastolicBP": 69,
+      "bloodSugar": 7,
+      "bodyTemp": 36,
+      "heartRate": 79
+    },
+    "pregnancyWeek": 7,
+    "symptoms": [
+      "Headache",
+      "Dizziness",
+      "Abdominal Pain",
+      "Fever"
+    ],
+    "previousPregnancyHistory": {
+      "gravida": null,
+      "para": null,
+      "liveBirths": null,
+      "pregnancyLosses": null,
+      "previousCesareanSections": null,
+      "previousMultiplePregnancy": true,
+      "outcomes": [],
+      "deliveryMethods": [],
+      "complications": [],
+      "unknown": false
+    },
+    "notes": "",
+    "result": {
+      "score": 54,
+      "level": "medium",
+      "confidence": 80.8,
+      "factors": [
+        "Elevated blood pressure",
+        "Early pregnancy (higher risk period)",
+        "Symptom: Headache",
+        "Symptom: Abdominal Pain",
+        "Symptom: Fever"
+      ],
+      "vitalContributions": [
+        {
+          "feature": "bloodSugar",
+          "label": "Blood sugar (mmol/L)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 7,
+          "unit": "mmol/L"
+        },
+        {
+          "feature": "age",
+          "label": "Maternal age (years)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 19,
+          "unit": "years"
+        },
+        {
+          "feature": "heartRate",
+          "label": "Heart rate (bpm)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 79,
+          "unit": "bpm"
+        },
+        {
+          "feature": "systolicBP",
+          "label": "Systolic blood pressure (mmHg)",
+          "contribution": 15,
+          "reason": "Elevated blood pressure",
+          "value": 131,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "diastolicBP",
+          "label": "Diastolic blood pressure (mmHg)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 69,
+          "unit": "mmHg"
+        },
+        {
+          "feature": "bodyTemp",
+          "label": "Body temperature (°C)",
+          "contribution": 0,
+          "reason": "Within configured threshold",
+          "value": 36,
+          "unit": "°C"
+        }
+      ],
+      "symptomContributions": [
+        {
+          "symptom": "Headache",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Dizziness",
+          "contribution": 0,
+          "reason": "No direct score contribution"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        },
+        {
+          "symptom": "Fever",
+          "contribution": 8,
+          "reason": "Moderate symptom signal"
+        }
+      ],
+      "historyContributions": [],
+      "protectiveFactors": [],
+      "previousPregnancyHistory": {
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": true,
+        "outcomes": [],
+        "deliveryMethods": [],
+        "complications": [],
+        "unknown": false
+      },
+      "currentSymptoms": [
+        "Headache",
+        "Dizziness",
+        "Abdominal Pain",
+        "Fever"
+      ],
+      "featureVector": {
+        "age": 19,
+        "systolicBP": 131,
+        "diastolicBP": 69,
+        "bloodSugar": 7,
+        "bodyTemp": 36,
+        "heartRate": 79,
+        "historyRisk_1": 0,
+        "historyRisk_2": 0,
+        "historyRisk_3": 0,
+        "historyRisk_4": 0,
+        "historyRisk_5": 0,
+        "historyRisk_6": 0,
+        "historyRisk_7": 0,
+        "historyRisk_8": 0,
+        "historyRisk_9": 0,
+        "historyRisk_10": 0,
+        "historyRisk_11": 0,
+        "historyRisk_12": 0,
+        "currentSymptom_Headache": 1,
+        "currentSymptom_Dizziness": 1,
+        "currentSymptom_BlurredVision": 0,
+        "currentSymptom_AbdominalPain": 1,
+        "currentSymptom_VaginalBleeding": 0,
+        "currentSymptom_SevereSwelling": 0,
+        "currentSymptom_ReducedFetalMovement": 0,
+        "currentSymptom_Fever": 1,
+        "currentSymptom_NauseaVomiting": 0,
+        "currentSymptom_DifficultyBreathing": 0,
+        "gravida": null,
+        "para": null,
+        "liveBirths": null,
+        "pregnancyLosses": null,
+        "previousCesareanSections": null,
+        "previousMultiplePregnancy": 1
+      },
+      "modelVersion": "rule-based-lscdm-expanded-v1",
+      "expandedFeatureSetUsed": true,
+      "shapAvailable": false,
+      "riskProbabilities": {
+        "low": 0,
+        "medium": 1,
+        "high": 0
+      },
+      "urgentSymptoms": [],
+      "correlations": [
+        {
+          "symptom": "Headache",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Headache",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom is a warning sign to review with the blood pressure reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Fever",
+          "vital": "bodyTemp",
+          "vitalLabel": "Body temperature (°C)",
+          "vitalValue": 36,
+          "vitalUnit": "°C",
+          "relationship": "The symptom is directly compared with the body temperature reading.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Dizziness",
+          "vital": "heartRate",
+          "vitalLabel": "Heart rate (bpm)",
+          "vitalValue": 79,
+          "vitalUnit": "bpm",
+          "relationship": "The symptom is reviewed alongside cardiovascular readings.",
+          "strength": "contextual"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "systolicBP",
+          "vitalLabel": "Systolic blood pressure (mmHg)",
+          "vitalValue": 131,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "observed"
+        },
+        {
+          "symptom": "Abdominal Pain",
+          "vital": "diastolicBP",
+          "vitalLabel": "Diastolic blood pressure (mmHg)",
+          "vitalValue": 69,
+          "vitalUnit": "mmHg",
+          "relationship": "This symptom requires clinical review alongside the blood pressure readings.",
+          "strength": "contextual"
+        }
+      ],
+      "historyCorrelations": [],
+      "riskCategories": [
+        {
+          "name": "Febrile illness risk",
+          "status": "Needs clinical review",
+          "evidence": [
+            "Body temperature 36 °C",
+            "Selected symptom: Fever"
+          ],
+          "note": "A high temperature can have infectious or non-infectious causes."
+        }
+      ],
+      "respiratoryRate": null,
+      "previousRisk": 1,
+      "deltaRisk": 0,
+      "alertStatus": "Routine Monitoring",
+      "recommendations": [
+        "Schedule a check-up within the next week",
+        "Monitor your blood pressure daily",
+        "Maintain a balanced diet low in sugar and salt",
+        "Ensure adequate rest and light exercise",
+        "Track your symptoms and report changes"
+      ],
+      "computationalPerformance": {
+        "executionTimeMs": 28.7153,
+        "memoryUtilizationMb": 0.06690216064453125
+      }
+    },
+    "riskState": 1,
+    "timestamp": "2026-09-04T05:59:10.735Z"
   }
 ]
